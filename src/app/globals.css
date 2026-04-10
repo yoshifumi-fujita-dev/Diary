@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -84,37 +85,37 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --background: oklch(0.08 0.02 280);
+  --foreground: oklch(0.96 0.02 260);
+  --card: oklch(0.12 0.03 280);
+  --card-foreground: oklch(0.96 0.02 260);
+  --popover: oklch(0.12 0.03 280);
+  --popover-foreground: oklch(0.96 0.02 260);
+  --primary: oklch(0.75 0.2 190);
+  --primary-foreground: oklch(0.12 0.03 280);
+  --secondary: oklch(0.2 0.04 280);
+  --secondary-foreground: oklch(0.96 0.02 260);
+  --muted: oklch(0.2 0.04 280);
+  --muted-foreground: oklch(0.7 0.03 260);
+  --accent: oklch(0.7 0.22 330);
+  --accent-foreground: oklch(0.12 0.03 280);
+  --destructive: oklch(0.7 0.25 25);
+  --border: oklch(0.85 0.08 200 / 20%);
+  --input: oklch(0.85 0.08 200 / 25%);
+  --ring: oklch(0.75 0.2 190);
+  --chart-1: oklch(0.75 0.2 190);
+  --chart-2: oklch(0.7 0.22 330);
+  --chart-3: oklch(0.8 0.15 120);
+  --chart-4: oklch(0.7 0.16 40);
+  --chart-5: oklch(0.75 0.18 260);
+  --sidebar: oklch(0.12 0.03 280);
+  --sidebar-foreground: oklch(0.96 0.02 260);
+  --sidebar-primary: oklch(0.75 0.2 190);
+  --sidebar-primary-foreground: oklch(0.12 0.03 280);
+  --sidebar-accent: oklch(0.2 0.04 280);
+  --sidebar-accent-foreground: oklch(0.96 0.02 260);
+  --sidebar-border: oklch(0.85 0.08 200 / 20%);
+  --sidebar-ring: oklch(0.75 0.2 190);
 }
 
 @layer base {
@@ -127,4 +128,109 @@
   html {
     @apply font-sans;
   }
+}
+
+/* Neon theme accents */
+body {
+  background-image:
+    radial-gradient(900px 500px at 10% -10%, rgba(0, 229, 255, 0.22), transparent 60%),
+    radial-gradient(800px 500px at 90% 0%, rgba(255, 0, 204, 0.22), transparent 58%),
+    radial-gradient(900px 700px at 50% 120%, rgba(118, 255, 142, 0.18), transparent 60%),
+    radial-gradient(1200px 800px at 50% 40%, rgba(129, 140, 248, 0.08), transparent 65%);
+  background-color: #05040a;
+}
+
+.bg-zinc-950 {
+  background-color: #07060d;
+}
+
+.bg-zinc-900 {
+  background-color: rgba(12, 10, 26, 0.92);
+  box-shadow:
+    0 0 0 1px rgba(0, 229, 255, 0.2),
+    0 0 32px rgba(0, 229, 255, 0.18),
+    0 0 48px rgba(255, 0, 204, 0.14),
+    inset 0 0 32px rgba(255, 0, 204, 0.12);
+}
+
+.bg-zinc-800 {
+  background-color: rgba(18, 16, 36, 0.94);
+  box-shadow:
+    0 0 0 1px rgba(0, 229, 255, 0.16),
+    0 0 20px rgba(0, 229, 255, 0.12),
+    inset 0 0 24px rgba(0, 229, 255, 0.1),
+    inset 0 0 18px rgba(255, 0, 204, 0.08);
+}
+
+.border-zinc-800 {
+  border-color: rgba(0, 229, 255, 0.28);
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.2);
+}
+
+.border-zinc-700 {
+  border-color: rgba(255, 0, 204, 0.28);
+  box-shadow: 0 0 12px rgba(255, 0, 204, 0.18);
+}
+
+.ring-zinc-600 {
+  --tw-ring-color: rgba(0, 229, 255, 0.55);
+}
+
+.ring-zinc-400 {
+  --tw-ring-color: rgba(255, 0, 204, 0.55);
+}
+
+.text-zinc-100 {
+  text-shadow:
+    0 0 12px rgba(0, 229, 255, 0.35),
+    0 0 24px rgba(255, 0, 204, 0.25),
+    0 0 8px rgba(255, 255, 255, 0.35);
+}
+
+.text-zinc-400 {
+  color: rgba(160, 210, 255, 0.8);
+}
+
+.text-zinc-500 {
+  color: rgba(140, 190, 230, 0.6);
+}
+
+.text-zinc-300 {
+  color: rgba(200, 240, 255, 0.85);
+}
+
+.text-red-400 {
+  color: #ff46a7;
+  text-shadow:
+    0 0 10px rgba(255, 70, 167, 0.6),
+    0 0 22px rgba(255, 70, 167, 0.35),
+    0 0 8px rgba(255, 255, 255, 0.25);
+}
+
+.text-blue-400 {
+  color: #3fe6ff;
+  text-shadow:
+    0 0 10px rgba(63, 230, 255, 0.6),
+    0 0 22px rgba(63, 230, 255, 0.35),
+    0 0 8px rgba(255, 255, 255, 0.25);
+}
+
+button:hover,
+a:hover {
+  text-shadow:
+    0 0 12px rgba(0, 229, 255, 0.45),
+    0 0 22px rgba(255, 0, 204, 0.3),
+    0 0 10px rgba(255, 255, 255, 0.35);
+}
+
+.tiptap p.is-editor-empty:first-child::before {
+  color: rgba(140, 190, 230, 0.45);
+}
+
+.tiptap p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: oklch(0.45 0 0);
+  pointer-events: none;
+  height: 0;
 }
