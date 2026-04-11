@@ -27,27 +27,31 @@ export default async function HomePage() {
       </header>
 
       <main className="max-w-2xl mx-auto px-4 py-8">
-        <div className="flex items-center justify-center gap-1 mb-6">
-          <Link href="/entries">
-            <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-zinc-100">
-              日記一覧
-            </Button>
-          </Link>
-          <Link href="/settings">
-            <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-zinc-100">
-              設定
-            </Button>
-          </Link>
-          <form
-            action={async () => {
-              "use server";
-              await signOut({ redirectTo: "/login" });
-            }}
-          >
-            <Button variant="ghost" size="sm" type="submit" className="text-zinc-400 hover:text-zinc-100">
-              ログアウト
-            </Button>
-          </form>
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-1">
+            <Link href="/entries">
+              <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-zinc-100">
+                日記一覧
+              </Button>
+            </Link>
+          </div>
+          <div className="flex items-center gap-1">
+            <Link href="/settings">
+              <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-zinc-100">
+                設定
+              </Button>
+            </Link>
+            <form
+              action={async () => {
+                "use server";
+                await signOut({ redirectTo: "/login" });
+              }}
+            >
+              <Button variant="ghost" size="sm" type="submit" className="text-zinc-400 hover:text-zinc-100">
+                ログアウト
+              </Button>
+            </form>
+          </div>
         </div>
         <CalendarView entryDates={entryDates} />
       </main>
