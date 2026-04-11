@@ -20,7 +20,13 @@ export default async function HomePage() {
     <div className="min-h-screen bg-zinc-950">
       <header className="bg-zinc-900 border-b border-zinc-800 sticky top-0 z-10">
         <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="w-24" />
+          <div className="flex gap-1 w-24">
+            <Link href="/entries">
+              <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-zinc-100">
+                日記一覧
+              </Button>
+            </Link>
+          </div>
           <h1 className="text-xl font-semibold text-zinc-100">4423 Diary</h1>
           <div className="flex gap-1">
             <Link href="/settings">
