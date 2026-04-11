@@ -9,6 +9,16 @@ export async function POST(request: Request) {
   const { password } = await request.json();
   const valid = await verifyDiaryPassword(password);
 
-  if (valid) return NextResponse.json({ ok: true });
+  if (valid) {
+    const res = NextResponse.json({ ok: true });
+    res.cookies.set("diary_access", "1", {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 60 * 10,
+      path: "/",
+    });
+    return res;
+  }
   return NextResponse.json({ error: "Invalid password" }, { status: 401 });
 }

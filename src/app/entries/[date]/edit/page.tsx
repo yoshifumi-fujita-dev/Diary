@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter, useParams, useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 
@@ -23,6 +23,9 @@ function formatDate(dateStr: string) {
 export default function EditEntryPage() {
   const router = useRouter();
   const { date } = useParams<{ date: string }>();
+  const searchParams = useSearchParams();
+  const fromList = searchParams.get("from") === "list";
+  const backHref = fromList ? `/entries?year=${date.slice(0, 4)}&skip_auth=1` : "/";
   const [content, setContent] = useState("");
   const [saving, setSaving] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -167,8 +170,8 @@ export default function EditEntryPage() {
     <div className="min-h-screen bg-zinc-950">
       <header className="bg-zinc-900 border-b border-zinc-800 sticky top-0 z-10">
         <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="text-sm text-zinc-400 hover:text-zinc-100">
-            ← カレンダー
+          <Link href={backHref} className="text-sm text-zinc-400 hover:text-zinc-100">
+            {fromList ? "← 日記一覧" : "← カレンダー"}
           </Link>
           <span className="text-zinc-500 text-sm">{formatDate(date)}</span>
           <div className="w-16" />

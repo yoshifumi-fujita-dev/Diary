@@ -314,8 +314,7 @@ export default function CalendarView({ entryDates }: CalendarViewProps) {
                 ${isFuture ? "opacity-25 cursor-default" : "hover:bg-zinc-800 cursor-pointer"}
                 ${hasEntry && !isToday ? "bg-zinc-800 ring-1 ring-zinc-600" : ""}
                 ${isToday ? "bg-zinc-700 font-bold ring-1 ring-zinc-400" : ""}
-                ${isHoliday && dayOfWeek !== 0 ? "text-red-400" : ""}
-                ${!isHoliday ? (dayOfWeek === 0 ? "text-red-400" : dayOfWeek === 6 ? "text-blue-400" : "text-zinc-300") : ""}
+                ${dayOfWeek === 0 || isHoliday ? "text-red-400" : dayOfWeek === 6 ? "text-blue-400" : "text-zinc-300"}
               `}
             >
               <span className="leading-none">{day}</span>
