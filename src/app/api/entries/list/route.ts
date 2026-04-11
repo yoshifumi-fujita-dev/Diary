@@ -4,21 +4,7 @@ import { cookies } from "next/headers";
 import { db } from "@/lib/db";
 import { entries } from "@/db/schema";
 import { desc, sql } from "drizzle-orm";
-
-function stripHtml(html: string): string {
-  return html
-    .replace(/<br\s*\/?>/gi, "\n")
-    .replace(/<\/p>/gi, "\n")
-    .replace(/<[^>]*>/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-function makePreview(html: string, length: number): string {
-  const text = stripHtml(html);
-  if (text.length <= length) return text;
-  return `${text.slice(0, length)}…`;
-}
+import { makePreview } from "@/lib/preview";
 
 export async function GET(request: Request) {
   const session = await auth();
