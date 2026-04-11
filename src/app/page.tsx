@@ -19,16 +19,16 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen bg-zinc-950">
       <header className="bg-zinc-900 border-b border-zinc-800 sticky top-0 z-10">
-        <div className="mx-auto px-4 py-4 grid grid-cols-[1fr,auto,1fr] items-center gap-2">
-          <div className="justify-self-start">
+        <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="flex gap-1 w-24">
             <Link href="/entries">
               <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-zinc-100">
                 日記一覧
               </Button>
             </Link>
           </div>
-          <h1 className="text-xl font-semibold text-zinc-100 text-center">4423 Diary</h1>
-          <div className="flex gap-1 justify-self-end">
+          <h1 className="text-xl font-semibold text-zinc-100">4423 Diary</h1>
+          <div className="flex gap-1">
             <Link href="/settings">
               <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-zinc-100">
                 設定
