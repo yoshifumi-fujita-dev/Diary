@@ -38,7 +38,7 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-zinc-950">
       <Card className="w-full max-w-sm bg-zinc-900 border-zinc-800">
         <CardHeader>
-          <CardTitle className="text-center text-2xl">日記</CardTitle>
+          <CardTitle className="text-center text-2xl">4423 Diary</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
