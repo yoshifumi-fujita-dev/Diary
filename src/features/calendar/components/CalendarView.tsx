@@ -245,10 +245,10 @@ export default function CalendarView({ entryDates }: CalendarViewProps) {
   return (
     <div>
       {/* 月ナビゲーション */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="grid grid-cols-[1fr,auto,1fr] items-center mb-6">
         <button
           onClick={prevMonth}
-          className="w-10 h-10 flex items-center justify-center text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded-full transition-colors text-xl"
+          className="w-10 h-10 flex items-center justify-center justify-self-start text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded-full transition-colors text-xl"
         >
           ‹
         </button>
@@ -256,14 +256,14 @@ export default function CalendarView({ entryDates }: CalendarViewProps) {
         {/* 年月クリックでピッカー表示 */}
         <button
           onClick={() => { setPickerYear(year); setShowPicker(true); }}
-          className="text-zinc-100 font-semibold text-lg hover:text-zinc-300 transition-colors px-2 py-1 rounded-lg hover:bg-zinc-800"
+          className="text-zinc-100 font-semibold text-lg hover:text-zinc-300 transition-colors px-2 py-1 rounded-lg hover:bg-zinc-800 justify-self-center"
         >
           {year}年{month + 1}月
         </button>
 
         <button
           onClick={nextMonth}
-          className="w-10 h-10 flex items-center justify-center text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded-full transition-colors text-xl"
+          className="w-10 h-10 flex items-center justify-center justify-self-end text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded-full transition-colors text-xl"
         >
           ›
         </button>
