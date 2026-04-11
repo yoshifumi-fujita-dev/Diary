@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/server/auth";
 import { verifyDiaryPassword } from "@/server/auth/passwords";
+import { attachDiaryAccessCookie } from "@/server/auth/diary-access";
 
 export async function POST(request: Request) {
   const session = await auth();
@@ -9,16 +10,6 @@ export async function POST(request: Request) {
   const { password } = await request.json();
   const valid = await verifyDiaryPassword(password);
 
-  if (valid) {
-    const res = NextResponse.json({ ok: true });
-    res.cookies.set("diary_access", "1", {
-      httpOnly: true,
-      sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 60 * 10,
-      path: "/",
-    });
-    return res;
-  }
+  if (valid) return attachDiaryAccessCookie(NextResponse.json({ ok: true }));
   return NextResponse.json({ error: "Invalid password" }, { status: 401 });
 }
