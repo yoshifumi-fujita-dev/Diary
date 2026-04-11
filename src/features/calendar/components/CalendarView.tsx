@@ -247,8 +247,8 @@ export default function CalendarView({ entryDates, headerLeft, headerRight }: Ca
   return (
     <div>
       {/* 月ナビゲーション */}
-      <div className="grid grid-cols-[1fr,auto,1fr] items-center mb-6">
-        <div className="justify-self-start">{headerLeft}</div>
+      <div className="grid grid-cols-[1fr,auto,1fr] items-center mb-6 h-10">
+        <div className="justify-self-start flex items-center h-10">{headerLeft}</div>
         <div className="flex items-center gap-2">
           <button
             onClick={prevMonth}
@@ -272,7 +272,7 @@ export default function CalendarView({ entryDates, headerLeft, headerRight }: Ca
             ›
           </button>
         </div>
-        <div className="justify-self-end">{headerRight}</div>
+        <div className="justify-self-end flex items-center h-10">{headerRight}</div>
       </div>
 
       {/* 曜日ヘッダー */}
