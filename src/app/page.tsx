@@ -27,7 +27,7 @@ export default async function HomePage() {
       </header>
 
       <main className="max-w-2xl mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-1">
             <Link href="/entries">
               <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-zinc-100">
