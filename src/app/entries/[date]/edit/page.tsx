@@ -179,9 +179,8 @@ export default function EditEntryPage() {
         {loaded && <TiptapEditor content={content} onChange={setContent} />}
 
         <div className="text-xs text-zinc-500">
-          {autosaveEnabled && saveState === "saving" && "自動保存中..."}
-          {autosaveEnabled && saveState === "saved" && lastSavedAt && `保存済み ${lastSavedAt.toLocaleTimeString("ja-JP")}`}
           {saveState === "error" && "保存に失敗しました"}
+          {saveState !== "error" && lastSavedAt && `保存済み ${lastSavedAt.toLocaleTimeString("ja-JP")}`}
         </div>
 
         {hasEntry && !confirming && (
