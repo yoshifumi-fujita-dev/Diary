@@ -1,9 +1,9 @@
-import { auth, signOut } from "@/lib/auth";
+import { auth, signOut } from "@/server/auth";
 import { redirect } from "next/navigation";
-import { db } from "@/lib/db";
+import { db } from "@/server/db";
 import { entries } from "@/db/schema";
-import { initializeDb } from "@/lib/init-db";
-import CalendarView from "@/components/CalendarView";
+import { initializeDb } from "@/server/auth/init-db";
+import CalendarView from "@/features/calendar/components/CalendarView";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 

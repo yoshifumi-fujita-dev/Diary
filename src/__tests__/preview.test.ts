@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { stripHtml, makePreview } from "@/lib/preview";
+import { makePreview } from "@/features/entries/lib/preview";
+import { stripHtml } from "@/features/entries/lib/text";
 
 describe("stripHtml", () => {
   it("pタグを除去する", () => {

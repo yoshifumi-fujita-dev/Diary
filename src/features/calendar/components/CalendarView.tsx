@@ -3,7 +3,7 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import * as HolidayJP from "@holiday-jp/holiday_jp";
-import { getDayColorType } from "@/lib/calendarColor";
+import { getDayColorType } from "@/features/calendar/lib/calendarColor";
 
 interface CalendarViewProps {
   entryDates: string[]; // YYYY-MM-DD[]

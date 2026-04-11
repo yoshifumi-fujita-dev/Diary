@@ -19,16 +19,16 @@ vi.mock("next/server", () => {
   };
 });
 
-vi.mock("@/lib/auth", () => ({
+vi.mock("@/server/auth", () => ({
   auth: vi.fn(),
 }));
 
-vi.mock("@/lib/passwords", () => ({
+vi.mock("@/server/auth/passwords", () => ({
   verifyDiaryPassword: vi.fn(),
 }));
 
-import { auth } from "@/lib/auth";
-import { verifyDiaryPassword } from "@/lib/passwords";
+import { auth } from "@/server/auth";
+import { verifyDiaryPassword } from "@/server/auth/passwords";
 import { POST } from "@/app/api/auth/verify-diary/route";
 
 const mockAuth = auth as ReturnType<typeof vi.fn>;

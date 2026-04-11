@@ -1,10 +1,7 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { auth } from "@/server/auth";
 import { cookies } from "next/headers";
-import { db } from "@/lib/db";
-import { entries } from "@/db/schema";
-import { desc, sql } from "drizzle-orm";
-import { makePreview } from "@/lib/preview";
+import { listEntriesByYear } from "@/server/entries";
 
 export async function GET(request: Request) {
   const session = await auth();
@@ -14,28 +11,7 @@ export async function GET(request: Request) {
   if (diaryAccess !== "1") return NextResponse.json({ error: "Forbidden" }, { status: 401 });
 
   const { searchParams } = new URL(request.url);
-  const year = searchParams.get("year");
-
-  // 全エントリの日付を取得して年一覧を作る
-  const allDates = await db.select({ date: entries.date }).from(entries);
-  const yearSet = new Set(allDates.map((r) => r.date.slice(0, 4)));
-  const years = [...yearSet].sort((a, b) => b.localeCompare(a));
-
-  if (!year || !/^\d{4}$/.test(year)) {
-    return NextResponse.json({ items: [], years });
-  }
-
-  // 指定年のエントリを取得（SQLのLIKEをsqlテンプレートで記述）
-  const rows = await db
-    .select({ date: entries.date, content: entries.content })
-    .from(entries)
-    .where(sql`${entries.date} LIKE ${year + "-%"}`)
-    .orderBy(desc(entries.date));
-
-  const items = rows.map((row) => ({
-    date: row.date,
-    preview: makePreview(row.content, 60),
-  }));
-
-  return NextResponse.json({ items, years });
+  const year = searchParams.get("year") ?? "";
+  const data = await listEntriesByYear(year);
+  return NextResponse.json(data);
 }

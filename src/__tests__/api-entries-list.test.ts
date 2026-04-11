@@ -9,7 +9,7 @@ vi.mock("next/server", () => ({
   },
 }));
 
-vi.mock("@/lib/auth", () => ({
+vi.mock("@/server/auth", () => ({
   auth: vi.fn(),
 }));
 
@@ -17,7 +17,7 @@ vi.mock("next/headers", () => ({
   cookies: vi.fn(),
 }));
 
-vi.mock("@/lib/db", () => ({
+vi.mock("@/server/db", () => ({
   db: { select: vi.fn() },
 }));
 
@@ -32,9 +32,9 @@ vi.mock("@/db/schema", () => ({
   entries: { date: "date", content: "content" },
 }));
 
-import { auth } from "@/lib/auth";
+import { auth } from "@/server/auth";
 import { cookies } from "next/headers";
-import { db } from "@/lib/db";
+import { db } from "@/server/db";
 import { GET } from "@/app/api/entries/list/route";
 
 const mockAuth = auth as ReturnType<typeof vi.fn>;

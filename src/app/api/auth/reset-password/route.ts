@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { verifyResetPin, setLoginPassword } from "@/lib/passwords";
-import { initializeDb } from "@/lib/init-db";
+import { verifyResetPin, setLoginPassword } from "@/server/auth/passwords";
+import { initializeDb } from "@/server/auth/init-db";
 
 export async function POST(request: Request) {
   await initializeDb();

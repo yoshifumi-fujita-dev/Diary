@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
-import { verifyDiaryPassword } from "@/lib/passwords";
+import { auth } from "@/server/auth";
+import { verifyDiaryPassword } from "@/server/auth/passwords";
 
 export async function POST(request: Request) {
   const session = await auth();

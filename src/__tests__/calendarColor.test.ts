@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { getDayColorType } from "@/lib/calendarColor";
+import { getDayColorType } from "@/features/calendar/lib/calendarColor";
 
 describe("getDayColorType", () => {
   describe("祝日でない場合", () => {

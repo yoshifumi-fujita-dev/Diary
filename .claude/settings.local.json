@@ -5,7 +5,25 @@
       "Read(//private/tmp/**)",
       "Bash(npx create-next-app@latest diary --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --no-turbopack)",
       "Bash(npm install:*)",
-      "Bash(npx shadcn@latest init --defaults)"
+      "Bash(npx shadcn@latest init --defaults)",
+      "Bash(node -e \"const d = require\\('./node_modules/drizzle-orm/dist/cjs/index.js'\\); console.log\\(typeof d.like, typeof d.selectDistinct\\)\")",
+      "Bash(grep -l \"selectDistinct\\\\|export.*like\" /Users/yoshifumi.fujita/Git/Diary/node_modules/drizzle-orm/*.d.ts)",
+      "Bash(grep -r \"selectDistinct\" /Users/yoshifumi.fujita/Git/Diary/node_modules/drizzle-orm/*.d.ts)",
+      "Bash(git diff:*)",
+      "Bash(git checkout:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m ':*)",
+      "Bash(git push:*)",
+      "Bash(gh pr create --title 'feat: 日記一覧画面の追加と各種バグ修正' --body ':*)",
+      "Bash(npm test:*)",
+      "Bash(gh pr:*)",
+      "Bash(git pull:*)",
+      "Bash(gh run:*)",
+      "Bash(gh api:*)",
+      "Bash(wc -l /Users/yoshifumi.fujita/Git/Diary/src/app/entries/[date]/edit/page.tsx /Users/yoshifumi.fujita/Git/Diary/src/components/CalendarView.tsx /Users/yoshifumi.fujita/Git/Diary/src/app/entries/page.tsx)",
+      "Bash(git fetch:*)",
+      "Bash(git commit:*)",
+      "Bash(npm run:*)"
     ]
   }
 }

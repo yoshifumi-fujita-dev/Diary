@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
-import { verifyResetPin, setResetPin } from "@/lib/passwords";
+import { auth } from "@/server/auth";
+import { verifyResetPin, setResetPin } from "@/server/auth/passwords";
 
 export async function PUT(request: Request) {
   const session = await auth();
