@@ -7,8 +7,6 @@ import { getDayColorType } from "@/features/calendar/lib/calendarColor";
 
 interface CalendarViewProps {
   entryDates: string[]; // YYYY-MM-DD[]
-  headerLeft?: React.ReactNode;
-  headerRight?: React.ReactNode;
 }
 
 const WEEKDAYS = ["日", "月", "火", "水", "木", "金", "土"];
@@ -26,7 +24,7 @@ const currentYear = new Date().getFullYear();
 const YEARS = Array.from({ length: currentYear - 2000 + 1 }, (_, i) => currentYear - i);
 const MONTHS = Array.from({ length: 12 }, (_, i) => i + 1);
 
-export default function CalendarView({ entryDates, headerLeft, headerRight }: CalendarViewProps) {
+export default function CalendarView({ entryDates }: CalendarViewProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const today = new Date();
@@ -247,36 +245,28 @@ export default function CalendarView({ entryDates, headerLeft, headerRight }: Ca
   return (
     <div>
       {/* 月ナビゲーション */}
-      <div className="grid grid-cols-[minmax(0,1fr),auto,minmax(0,1fr)] items-center mb-6 gap-2 h-10">
-        <div className="justify-self-start flex items-center h-10 min-w-0">
-          {headerLeft}
-        </div>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={prevMonth}
-            className="w-10 h-10 flex items-center justify-center text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded-full transition-colors text-xl"
-          >
-            ‹
-          </button>
+      <div className="flex items-center justify-between mb-6">
+        <button
+          onClick={prevMonth}
+          className="w-10 h-10 flex items-center justify-center text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded-full transition-colors text-xl"
+        >
+          ‹
+        </button>
 
-          {/* 年月クリックでピッカー表示 */}
-          <button
-            onClick={() => { setPickerYear(year); setShowPicker(true); }}
-            className="text-zinc-100 font-semibold text-lg hover:text-zinc-300 transition-colors px-2 py-1 rounded-lg hover:bg-zinc-800"
-          >
-            {year}年{month + 1}月
-          </button>
+        {/* 年月クリックでピッカー表示 */}
+        <button
+          onClick={() => { setPickerYear(year); setShowPicker(true); }}
+          className="text-zinc-100 font-semibold text-lg hover:text-zinc-300 transition-colors px-2 py-1 rounded-lg hover:bg-zinc-800"
+        >
+          {year}年{month + 1}月
+        </button>
 
-          <button
-            onClick={nextMonth}
-            className="w-10 h-10 flex items-center justify-center text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded-full transition-colors text-xl"
-          >
-            ›
-          </button>
-        </div>
-        <div className="justify-self-end flex items-center h-10 min-w-0">
-          {headerRight}
-        </div>
+        <button
+          onClick={nextMonth}
+          className="w-10 h-10 flex items-center justify-center text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded-full transition-colors text-xl"
+        >
+          ›
+        </button>
       </div>
 
       {/* 曜日ヘッダー */}
