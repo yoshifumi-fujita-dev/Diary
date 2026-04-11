@@ -1,11 +1,13 @@
-import { auth, signOut } from "@/server/auth";
+import { auth } from "@/server/auth";
 import { redirect } from "next/navigation";
 import { db } from "@/server/db";
 import { entries } from "@/db/schema";
 import { initializeDb } from "@/server/auth/init-db";
 import CalendarView from "@/features/calendar/components/CalendarView";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import {
+  CalendarHeaderLeft,
+  CalendarHeaderRight,
+} from "@/features/calendar/components/CalendarHeaderMenu";
 
 export default async function HomePage() {
   const session = await auth();
@@ -27,33 +29,11 @@ export default async function HomePage() {
       </header>
 
       <main className="max-w-2xl mx-auto px-4 pt-2 pb-8">
-        <div className="flex items-center justify-between mb-1">
-          <div className="flex items-center gap-1">
-            <Link href="/entries">
-              <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-zinc-100">
-                日記一覧
-              </Button>
-            </Link>
-          </div>
-          <div className="flex items-center gap-1">
-            <Link href="/settings">
-              <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-zinc-100">
-                設定
-              </Button>
-            </Link>
-            <form
-              action={async () => {
-                "use server";
-                await signOut({ redirectTo: "/login" });
-              }}
-            >
-              <Button variant="ghost" size="sm" type="submit" className="text-zinc-400 hover:text-zinc-100">
-                ログアウト
-              </Button>
-            </form>
-          </div>
-        </div>
-        <CalendarView entryDates={entryDates} />
+        <CalendarView
+          entryDates={entryDates}
+          headerLeft={<CalendarHeaderLeft />}
+          headerRight={<CalendarHeaderRight />}
+        />
       </main>
     </div>
   );
