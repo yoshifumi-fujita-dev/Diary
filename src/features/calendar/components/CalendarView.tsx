@@ -2,6 +2,8 @@
 
 import { useState, useMemo, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { signOut } from "next-auth/react";
+import Link from "next/link";
 import * as HolidayJP from "@holiday-jp/holiday_jp";
 import { getDayColorType } from "@/features/calendar/lib/calendarColor";
 
@@ -245,30 +247,59 @@ export default function CalendarView({ entryDates }: CalendarViewProps) {
   return (
     <div>
       {/* 月ナビゲーション */}
-      <div className="flex items-center justify-between mb-6">
-        <button
-          onClick={prevMonth}
-          className="w-10 h-10 flex items-center justify-center text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded-full transition-colors text-xl"
-        >
-          ‹
-        </button>
+      <div className="flex items-center mb-6">
+        <div className="flex-1">
+          <Link
+            href="/entries"
+            className="text-sm text-zinc-400 hover:text-zinc-100 transition-colors px-2 py-1 rounded-lg hover:bg-zinc-800"
+          >
+            日記一覧
+          </Link>
+        </div>
 
-        {/* 年月クリックでピッカー表示 */}
-        <button
-          onClick={() => { setPickerYear(year); setShowPicker(true); }}
-          className="text-zinc-100 font-semibold text-lg hover:text-zinc-300 transition-colors px-2 py-1 rounded-lg hover:bg-zinc-800"
-        >
-          {year}年{month + 1}月
-        </button>
+        <div className="flex items-center gap-1">
+          <button
+            onClick={prevMonth}
+            className="w-10 h-10 flex items-center justify-center text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded-full transition-colors text-xl"
+          >
+            ‹
+          </button>
 
-        <button
-          onClick={nextMonth}
-          className="w-10 h-10 flex items-center justify-center text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded-full transition-colors text-xl"
-        >
-          ›
-        </button>
+          {/* 年月クリックでピッカー表示 */}
+          <button
+            onClick={() => { setPickerYear(year); setShowPicker(true); }}
+            className="text-zinc-100 font-semibold text-lg hover:text-zinc-300 transition-colors px-2 py-1 rounded-lg hover:bg-zinc-800"
+          >
+            {year}年{month + 1}月
+          </button>
+
+          <button
+            onClick={nextMonth}
+            className="w-10 h-10 flex items-center justify-center text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded-full transition-colors text-xl"
+          >
+            ›
+          </button>
+        </div>
+
+        <div className="flex-1 flex items-center justify-end gap-1">
+          <Link
+            href="/settings"
+            className="text-sm text-zinc-400 hover:text-zinc-100 transition-colors px-2 py-1 rounded-lg hover:bg-zinc-800"
+          >
+            設定
+          </Link>
+          <button
+            type="button"
+            onClick={() => signOut({ callbackUrl: "/login" })}
+            className="text-sm text-zinc-400 hover:text-zinc-100 transition-colors px-2 py-1 rounded-lg hover:bg-zinc-800"
+          >
+            ログアウト
+          </button>
+        </div>
       </div>
 
+      {/* カレンダー本体 */}
+      <div className="border border-zinc-800 rounded-2xl p-4">
       {/* 曜日ヘッダー */}
       <div className="grid grid-cols-7 mb-2">
         {WEEKDAYS.map((wd, i) => (
@@ -333,6 +364,7 @@ export default function CalendarView({ entryDates }: CalendarViewProps) {
           );
         })}
       </div>
+      </div>{/* /カレンダー本体 */}
 
       {/* 凡例 */}
       <div className="flex items-center gap-4 mt-4 justify-end">
