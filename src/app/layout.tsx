@@ -9,8 +9,8 @@ const shipporiMincho = Shippori_Mincho({
 });
 
 export const metadata: Metadata = {
-  title: "日記",
-  description: "個人日記アプリ",
+  title: "4423 Diary",
+  description: "4423 Diary",
   icons: {
     icon: "/icon.png",
     apple: "/icon.png",
