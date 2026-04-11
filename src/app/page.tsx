@@ -19,7 +19,7 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen bg-zinc-950">
       <header className="bg-zinc-900 border-b border-zinc-800 sticky top-0 z-10">
-        <div className="max-w-2xl mx-auto px-4 py-4 grid grid-cols-[auto,1fr,auto] items-center gap-2">
+        <div className="mx-auto px-4 py-4 grid grid-cols-[1fr,auto,1fr] items-center gap-2">
           <div className="justify-self-start">
             <Link href="/entries">
               <Button variant="ghost" size="sm" className="text-zinc-400 hover:text-zinc-100">
