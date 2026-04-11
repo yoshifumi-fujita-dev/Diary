@@ -26,7 +26,7 @@ export default async function HomePage() {
         </div>
       </header>
 
-      <main className="max-w-2xl mx-auto px-4 py-8">
+      <main className="max-w-2xl mx-auto px-4 pt-2 pb-8">
         <div className="flex items-center justify-between mb-1">
           <div className="flex items-center gap-1">
             <Link href="/entries">
