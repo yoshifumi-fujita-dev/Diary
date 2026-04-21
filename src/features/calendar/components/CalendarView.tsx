@@ -18,7 +18,11 @@ function toDateStr(year: number, month: number, day: number): string {
 }
 
 function getTodayStr(): string {
-  return new Intl.DateTimeFormat("sv-SE", { timeZone: "Asia/Tokyo" }).format(new Date());
+  const jst = new Date(Date.now() + 9 * 60 * 60 * 1000);
+  const y = jst.getUTCFullYear();
+  const m = String(jst.getUTCMonth() + 1).padStart(2, "0");
+  const d = String(jst.getUTCDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
 }
 
 const currentYear = new Date().getFullYear();
