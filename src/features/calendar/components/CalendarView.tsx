@@ -44,7 +44,10 @@ export default function CalendarView({ entryDates }: CalendarViewProps) {
   const gridRef = useRef<HTMLDivElement>(null);
 
   const entrySet = new Set(entryDates);
-  const todayStr = getTodayStr();
+  const [todayStr, setTodayStr] = useState<string>("");
+  useEffect(() => {
+    setTodayStr(getTodayStr());
+  }, []);
 
   // 当月の祝日マップ { "YYYY-MM-DD": "祝日名" }
   const holidayMap = useMemo(() => {
