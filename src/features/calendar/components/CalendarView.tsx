@@ -18,8 +18,7 @@ function toDateStr(year: number, month: number, day: number): string {
 }
 
 function getTodayStr(): string {
-  const d = new Date();
-  return toDateStr(d.getFullYear(), d.getMonth(), d.getDate());
+  return new Intl.DateTimeFormat("sv-SE", { timeZone: "Asia/Tokyo" }).format(new Date());
 }
 
 const currentYear = new Date().getFullYear();
@@ -44,10 +43,7 @@ export default function CalendarView({ entryDates }: CalendarViewProps) {
   const gridRef = useRef<HTMLDivElement>(null);
 
   const entrySet = new Set(entryDates);
-  const [todayStr, setTodayStr] = useState<string>("");
-  useEffect(() => {
-    setTodayStr(getTodayStr());
-  }, []);
+  const todayStr = getTodayStr();
 
   // 当月の祝日マップ { "YYYY-MM-DD": "祝日名" }
   const holidayMap = useMemo(() => {
