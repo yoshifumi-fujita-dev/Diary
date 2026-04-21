@@ -9,6 +9,7 @@ import { getDayColorType } from "@/features/calendar/lib/calendarColor";
 
 interface CalendarViewProps {
   entryDates: string[]; // YYYY-MM-DD[]
+  todayStr: string; // YYYY-MM-DD in JST, computed server-side
 }
 
 const WEEKDAYS = ["日", "月", "火", "水", "木", "金", "土"];
@@ -17,19 +18,11 @@ function toDateStr(year: number, month: number, day: number): string {
   return `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
 }
 
-function getTodayStr(): string {
-  const jst = new Date(Date.now() + 9 * 60 * 60 * 1000);
-  const y = jst.getUTCFullYear();
-  const m = String(jst.getUTCMonth() + 1).padStart(2, "0");
-  const d = String(jst.getUTCDate()).padStart(2, "0");
-  return `${y}-${m}-${d}`;
-}
-
 const currentYear = new Date().getFullYear();
 const YEARS = Array.from({ length: currentYear - 2000 + 1 }, (_, i) => currentYear - i);
 const MONTHS = Array.from({ length: 12 }, (_, i) => i + 1);
 
-export default function CalendarView({ entryDates }: CalendarViewProps) {
+export default function CalendarView({ entryDates, todayStr }: CalendarViewProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const today = new Date();
@@ -47,7 +40,6 @@ export default function CalendarView({ entryDates }: CalendarViewProps) {
   const gridRef = useRef<HTMLDivElement>(null);
 
   const entrySet = new Set(entryDates);
-  const todayStr = getTodayStr();
 
   // 当月の祝日マップ { "YYYY-MM-DD": "祝日名" }
   const holidayMap = useMemo(() => {

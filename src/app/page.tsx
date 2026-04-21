@@ -5,6 +5,14 @@ import { entries } from "@/db/schema";
 import { initializeDb } from "@/server/auth/init-db";
 import CalendarView from "@/features/calendar/components/CalendarView";
 
+function getTodayStrJST(): string {
+  const jst = new Date(Date.now() + 9 * 60 * 60 * 1000);
+  const y = jst.getUTCFullYear();
+  const m = String(jst.getUTCMonth() + 1).padStart(2, "0");
+  const d = String(jst.getUTCDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
 export default async function HomePage() {
   const session = await auth();
   if (!session) redirect("/login");
@@ -13,6 +21,7 @@ export default async function HomePage() {
 
   const allEntries = await db.select({ date: entries.date }).from(entries);
   const entryDates = allEntries.map((e) => e.date);
+  const todayStr = getTodayStrJST();
 
   return (
     <div className="min-h-screen bg-zinc-950">
@@ -23,7 +32,7 @@ export default async function HomePage() {
       </header>
 
       <main className="max-w-2xl mx-auto px-4 py-8">
-        <CalendarView entryDates={entryDates} />
+        <CalendarView entryDates={entryDates} todayStr={todayStr} />
       </main>
     </div>
   );
