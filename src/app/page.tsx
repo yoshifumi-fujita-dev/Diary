@@ -5,6 +5,8 @@ import { entries } from "@/db/schema";
 import { initializeDb } from "@/server/auth/init-db";
 import CalendarView from "@/features/calendar/components/CalendarView";
 
+export const dynamic = "force-dynamic";
+
 function getTodayStrJST(): string {
   const jst = new Date(Date.now() + 9 * 60 * 60 * 1000);
   const y = jst.getUTCFullYear();
