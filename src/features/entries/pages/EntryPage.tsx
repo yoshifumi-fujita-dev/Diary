@@ -18,7 +18,7 @@ export default async function EntryPage({ params }: Params) {
   const [entry] = await db.select().from(entries).where(eq(entries.date, date));
 
   return (
-    <div className="min-h-screen bg-zinc-950">
+    <div className="min-h-dvh bg-zinc-950">
       <header className="bg-zinc-900 border-b border-zinc-800 sticky top-0 z-10">
         <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="text-sm text-zinc-400 hover:text-zinc-100">

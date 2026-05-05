@@ -23,7 +23,13 @@
       "Bash(wc -l /Users/yoshifumi.fujita/Git/Diary/src/app/entries/[date]/edit/page.tsx /Users/yoshifumi.fujita/Git/Diary/src/components/CalendarView.tsx /Users/yoshifumi.fujita/Git/Diary/src/app/entries/page.tsx)",
       "Bash(git fetch:*)",
       "Bash(git commit:*)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(vercel --version)",
+      "Bash(vercel --prod)",
+      "Bash(vercel domains:*)",
+      "Bash(vercel alias:*)",
+      "Bash(curl -s https://4423-diary.vercel.app/)",
+      "Bash(curl -sI https://4423-diary.vercel.app/)"
     ]
   }
 }

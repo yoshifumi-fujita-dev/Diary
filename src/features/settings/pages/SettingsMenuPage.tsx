@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { KeyRound, Notebook, Shield, Timer, Lock } from "lucide-react";
+import { KeyRound, Notebook, Shield, Timer, Lock, Upload } from "lucide-react";
 
 const items = [
   {
@@ -35,11 +35,17 @@ const items = [
     desc: "無操作でカレンダーへ戻す時間を設定します",
     Icon: Lock,
   },
+  {
+    href: "/settings/legacy-import",
+    title: "旧システムのインポート",
+    desc: "暗号化ファイルを読み込んで日記に取り込みます",
+    Icon: Upload,
+  },
 ];
 
 export default function SettingsMenuPage() {
   return (
-    <div className="min-h-screen bg-zinc-950">
+    <div className="min-h-dvh bg-zinc-950">
       <header className="bg-zinc-900 border-b border-zinc-800 sticky top-0 z-10">
         <div className="max-w-lg mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="text-sm text-zinc-400 hover:text-zinc-100">

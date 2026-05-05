@@ -130,6 +130,37 @@
   }
 }
 
+/* ─── レスポンシブ / PWA セーフエリア ─── */
+
+/* iPhoneノッチ・Dynamic Island 対応: ヘッダーを画面最上部からスタートさせ
+   ステータスバー分だけ内側コンテンツを下げる */
+header.sticky {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* ホームインジケーター (iPhone 下部) にコンテンツが隠れないようにする */
+body {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* iOS Safariでフォームフォーカス時の自動ズームを防ぐ (16px未満が原因) */
+@supports (-webkit-touch-callout: none) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+/* スクロールバーを非表示にするユーティリティ */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* Neon theme accents */
 body {
   background-image:

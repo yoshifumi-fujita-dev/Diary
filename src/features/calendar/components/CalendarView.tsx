@@ -219,7 +219,7 @@ export default function CalendarView({ entryDates, todayStr }: CalendarViewProps
     return () => cancelAnimationFrame(id);
   }, [showModal, showPicker, focusedDay, year, month]);
 
-  async function handleVerify(e: React.FormEvent) {
+  async function handleVerify(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setVerifying(true);
     setError("");
@@ -312,7 +312,7 @@ export default function CalendarView({ entryDates, todayStr }: CalendarViewProps
       {/* 日付グリッド */}
       <div
         ref={gridRef}
-        className="grid grid-cols-7 gap-2"
+        className="grid grid-cols-7 gap-1 sm:gap-2"
         onKeyDown={handleGridKeyDown}
       >
         {cells.map((day, idx) => {

@@ -143,7 +143,7 @@ function EntriesListInner() {
     };
   }, [router, idleTimeoutMs]);
 
-  async function handleVerify(e: React.FormEvent) {
+  async function handleVerify(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setVerifying(true);
     setPwError("");
@@ -223,7 +223,7 @@ function EntriesListInner() {
           </div>
 
           {/* 月ナビ */}
-          <div className="flex justify-center gap-x-0.5 pb-2">
+          <div className="flex gap-x-0.5 pb-2 overflow-x-auto no-scrollbar sm:justify-center">
             {Array.from({ length: 12 }, (_, i) => {
               const m = String(i + 1).padStart(2, "0");
               const key = `${yearParam}-${m}`;
@@ -348,7 +348,7 @@ function EntriesListInner() {
 
 export default function EntriesListPage() {
   return (
-    <div className="min-h-screen bg-zinc-950">
+    <div className="min-h-dvh bg-zinc-950">
       <header className="bg-zinc-900 border-b border-zinc-800 sticky top-0 z-20">
         <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="text-sm text-zinc-400 hover:text-zinc-100">

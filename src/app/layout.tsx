@@ -13,6 +13,7 @@ export const viewport: Viewport = {
   themeColor: "#05040a",
   width: "device-width",
   initialScale: 1,
+  viewportFit: "cover",
 };
 
 export const metadata: Metadata = {
@@ -38,7 +39,7 @@ export default function RootLayout({
   return (
     <html
       lang="ja"
-      className={`${shipporiMincho.variable} h-full antialiased dark`}
+      className={`${shipporiMincho.variable} min-h-dvh antialiased dark`}
     >
       <body className="min-h-full flex flex-col font-(family-name:--font-shippori)">
         {children}

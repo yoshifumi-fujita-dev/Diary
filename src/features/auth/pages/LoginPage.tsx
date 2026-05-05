@@ -15,7 +15,7 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
     setError("");
@@ -35,7 +35,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-zinc-950">
+    <div className="min-h-dvh flex items-center justify-center bg-zinc-950">
       <Card className="w-full max-w-sm bg-zinc-900 border-zinc-800">
         <CardHeader>
           <CardTitle className="text-center text-2xl">4423 Diary</CardTitle>
