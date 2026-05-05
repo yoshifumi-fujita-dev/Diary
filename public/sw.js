@@ -1,5 +1,5 @@
-const STATIC_CACHE = 'diary-static-v1';
-const RUNTIME_CACHE = 'diary-runtime-v1';
+const STATIC_CACHE = 'diary-static-v2';
+const RUNTIME_CACHE = 'diary-runtime-v2';
 
 const PRECACHE_ASSETS = ['/icon.png', '/manifest.json'];
 
