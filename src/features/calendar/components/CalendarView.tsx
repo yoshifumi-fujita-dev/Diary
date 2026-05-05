@@ -507,10 +507,7 @@ export default function CalendarView({ entryDates, todayStr }: CalendarViewProps
           onClick={(e) => { if (e.target === e.currentTarget) setShowAutoLockNotice(false); }}
         >
           <div className="bg-zinc-900 border border-zinc-700 rounded-2xl p-6 w-full max-w-sm mx-4 shadow-2xl">
-            <h2 className="text-zinc-100 font-semibold text-base mb-2">自動ロックしました</h2>
-            <p className="text-zinc-400 text-sm mb-4">
-              操作がなかったため、日記入力を終了しました。
-            </p>
+            <h2 className="text-zinc-100 font-semibold text-base mb-4">自動ロックしました</h2>
             <button
               type="button"
               onClick={() => setShowAutoLockNotice(false)}
