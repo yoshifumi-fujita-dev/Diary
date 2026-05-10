@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CalendarDays, BookOpen, Settings } from "lucide-react";
+import { CalendarDays, BookOpen, Settings, LogOut } from "lucide-react";
+import { signOut } from "next-auth/react";
 
 const HIDE_PATHS = ["/login", "/reset-password"];
 
@@ -41,6 +42,13 @@ export function BottomNav() {
             </Link>
           );
         })}
+        <button
+          onClick={() => signOut({ callbackUrl: "/login" })}
+          className="flex flex-col items-center gap-1 flex-1 py-2.5 transition-colors text-zinc-500"
+        >
+          <LogOut className="w-5 h-5" strokeWidth={1.5} />
+          <span className="text-[10px] leading-none tracking-wide">ログアウト</span>
+        </button>
       </div>
     </nav>
   );
