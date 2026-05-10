@@ -2,7 +2,6 @@
 
 import { useState, useMemo, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { signOut } from "next-auth/react";
 import Link from "next/link";
 import * as HolidayJP from "@holiday-jp/holiday_jp";
 import { getDayColorType } from "@/features/calendar/lib/calendarColor";
@@ -276,21 +275,7 @@ export default function CalendarView({ entryDates, todayStr }: CalendarViewProps
           </button>
         </div>
 
-        <div className="flex-1 flex items-center justify-end gap-1">
-          <Link
-            href="/settings"
-            className="text-sm text-zinc-400 hover:text-zinc-100 transition-colors px-2 py-1 rounded-lg hover:bg-zinc-800"
-          >
-            設定
-          </Link>
-          <button
-            type="button"
-            onClick={() => signOut({ callbackUrl: "/login" })}
-            className="text-sm text-zinc-400 hover:text-zinc-100 transition-colors px-2 py-1 rounded-lg hover:bg-zinc-800"
-          >
-            ログアウト
-          </button>
-        </div>
+        <div className="flex-1" />
       </div>
 
       {/* カレンダー本体 */}
