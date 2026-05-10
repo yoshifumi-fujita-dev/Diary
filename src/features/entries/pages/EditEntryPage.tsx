@@ -169,7 +169,7 @@ export default function EditEntryPage() {
   return (
     <div className="min-h-dvh bg-zinc-950">
       <header className="bg-zinc-900 border-b border-zinc-800 sticky top-0 z-10">
-        <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
+        <div className="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href={backHref} className="text-sm text-zinc-400 hover:text-zinc-100">
             {fromList ? "← 日記一覧" : "← カレンダー"}
           </Link>
@@ -178,7 +178,7 @@ export default function EditEntryPage() {
         </div>
       </header>
 
-      <main className="max-w-2xl mx-auto px-4 py-6 space-y-3">
+      <main className="max-w-3xl mx-auto px-4 py-6 space-y-3">
         {loaded && <TiptapEditor content={content} onChange={setContent} />}
 
         <div className="text-xs text-zinc-500">
