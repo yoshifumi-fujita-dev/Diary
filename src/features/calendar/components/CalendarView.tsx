@@ -336,7 +336,7 @@ export default function CalendarView({ entryDates, todayStr }: CalendarViewProps
                 </span>
               )}
               {hasEntry && (
-                <span className={`absolute bottom-1 text-[10px] leading-none ${isHoliday ? "text-red-400" : "text-zinc-400"}`}>
+                <span className={`absolute bottom-1 text-[10px] leading-none hidden sm:inline ${isHoliday ? "text-red-400" : "text-zinc-400"}`}>
                   ！＼(◎o◎)／！
                 </span>
               )}
