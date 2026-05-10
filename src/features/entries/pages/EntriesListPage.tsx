@@ -223,27 +223,25 @@ function EntriesListInner() {
           </div>
 
           {/* 月ナビ */}
-          <div className="overflow-x-auto no-scrollbar pb-2 text-center">
-            <div className="inline-flex gap-x-0.5">
-              {Array.from({ length: 12 }, (_, i) => {
-                const m = String(i + 1).padStart(2, "0");
-                const key = `${yearParam}-${m}`;
-                const hasEntries = grouped.some((g) => g.key === key);
-                return hasEntries ? (
-                  <a
-                    key={m}
-                    href={`#month-${key}`}
-                    className="px-2 py-1 text-sm text-zinc-400 hover:text-zinc-100 transition-colors"
-                  >
-                    {i + 1}月
-                  </a>
-                ) : (
-                  <span key={m} className="px-2 py-1 text-sm text-zinc-700 cursor-default">
-                    {i + 1}月
-                  </span>
-                );
-              })}
-            </div>
+          <div className="grid grid-cols-12 pb-2">
+            {Array.from({ length: 12 }, (_, i) => {
+              const m = String(i + 1).padStart(2, "0");
+              const key = `${yearParam}-${m}`;
+              const hasEntries = grouped.some((g) => g.key === key);
+              return hasEntries ? (
+                <a
+                  key={m}
+                  href={`#month-${key}`}
+                  className="py-1 text-sm text-zinc-400 hover:text-zinc-100 transition-colors text-center"
+                >
+                  {i + 1}月
+                </a>
+              ) : (
+                <span key={m} className="py-1 text-sm text-zinc-700 cursor-default text-center">
+                  {i + 1}月
+                </span>
+              );
+            })}
           </div>
         </div>
       </div>
