@@ -28,12 +28,12 @@ export default async function HomePage() {
   return (
     <div className="min-h-dvh bg-zinc-950">
       <header className="bg-zinc-900 border-b border-zinc-800 sticky top-0 z-10">
-        <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-center">
+        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-center">
           <h1 className="text-xl font-semibold text-zinc-100">4423 Diary</h1>
         </div>
       </header>
 
-      <main className="max-w-2xl mx-auto px-4 py-8 pb-24 sm:pb-8">
+      <main className="max-w-4xl mx-auto px-4 py-8 pb-24 sm:pb-8">
         <CalendarView entryDates={entryDates} todayStr={todayStr} />
       </main>
     </div>
