@@ -33,7 +33,7 @@ export default async function HomePage() {
         </div>
       </header>
 
-      <main className="max-w-2xl mx-auto px-4 py-8">
+      <main className="max-w-2xl mx-auto px-4 py-8 pb-24 sm:pb-8">
         <CalendarView entryDates={entryDates} todayStr={todayStr} />
       </main>
     </div>

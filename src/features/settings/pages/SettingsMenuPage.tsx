@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { signOut } from "next-auth/react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { KeyRound, Notebook, Shield, Timer, Lock, Upload } from "lucide-react";
+import { KeyRound, Notebook, Shield, Timer, Lock, Upload, LogOut } from "lucide-react";
 
 const items = [
   {
@@ -56,7 +57,7 @@ export default function SettingsMenuPage() {
         </div>
       </header>
 
-      <main className="max-w-lg mx-auto px-4 py-8 space-y-4">
+      <main className="max-w-lg mx-auto px-4 py-8 pb-24 sm:pb-8 space-y-4">
         {items.map((item) => (
           <Link key={item.href} href={item.href}>
             <Card className="bg-zinc-900 border-zinc-800 hover:border-zinc-700 transition-colors">
@@ -70,6 +71,13 @@ export default function SettingsMenuPage() {
             </Card>
           </Link>
         ))}
+        <button
+          onClick={() => signOut({ callbackUrl: "/login" })}
+          className="w-full flex items-center gap-3 px-4 py-3 text-sm text-zinc-500 hover:text-red-400 transition-colors rounded-xl hover:bg-zinc-900"
+        >
+          <LogOut className="w-4 h-4" />
+          ログアウト
+        </button>
       </main>
     </div>
   );

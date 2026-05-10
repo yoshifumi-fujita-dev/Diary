@@ -247,7 +247,7 @@ function EntriesListInner() {
       </div>
 
       {/* ── エントリ一覧 ── */}
-      <main className="max-w-2xl mx-auto px-4 py-6">
+      <main className="max-w-2xl mx-auto px-4 py-6 pb-24 sm:pb-6">
         {loading && (
           <div className="text-zinc-600 text-sm">読み込み中...</div>
         )}

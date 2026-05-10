@@ -246,7 +246,7 @@ export default function CalendarView({ entryDates, todayStr }: CalendarViewProps
         <div className="flex-1">
           <Link
             href="/entries"
-            className="text-sm text-zinc-400 hover:text-zinc-100 transition-colors px-2 py-1 rounded-lg hover:bg-zinc-800"
+            className="hidden sm:inline-block text-sm text-zinc-400 hover:text-zinc-100 transition-colors px-2 py-1 rounded-lg hover:bg-zinc-800"
           >
             日記一覧
           </Link>
@@ -276,7 +276,7 @@ export default function CalendarView({ entryDates, todayStr }: CalendarViewProps
           </button>
         </div>
 
-        <div className="flex-1 flex items-center justify-end gap-1">
+        <div className="flex-1 hidden sm:flex items-center justify-end gap-1">
           <Link
             href="/settings"
             className="text-sm text-zinc-400 hover:text-zinc-100 transition-colors px-2 py-1 rounded-lg hover:bg-zinc-800"

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Shippori_Mincho } from "next/font/google";
 import { ServiceWorkerRegistration } from "@/components/ServiceWorkerRegistration";
+import { BottomNav } from "@/components/BottomNav";
 import "./globals.css";
 
 const shipporiMincho = Shippori_Mincho({
@@ -43,6 +44,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col font-(family-name:--font-shippori)">
         {children}
+        <BottomNav />
         <ServiceWorkerRegistration />
       </body>
     </html>
