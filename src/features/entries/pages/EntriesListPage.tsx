@@ -223,7 +223,7 @@ function EntriesListInner() {
           </div>
 
           {/* 月ナビ */}
-          <div className="flex gap-x-0.5 pb-2 overflow-x-auto no-scrollbar sm:justify-center">
+          <div className="flex gap-x-0.5 pb-2 overflow-x-auto no-scrollbar justify-center">
             {Array.from({ length: 12 }, (_, i) => {
               const m = String(i + 1).padStart(2, "0");
               const key = `${yearParam}-${m}`;
