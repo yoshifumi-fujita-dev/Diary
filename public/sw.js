@@ -1,50 +1,38 @@
-const STATIC_CACHE = 'diary-static-v2';
-const RUNTIME_CACHE = 'diary-runtime-v2';
+// v3: インストール失敗で古いSWが残り続けるバグを修正
+// skipWaiting を即時呼び出しに変更し、/_next/static/ のみキャッシュ
 
-const PRECACHE_ASSETS = ['/icon.png', '/manifest.json'];
+const CACHE = 'diary-v3';
 
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches
-      .open(STATIC_CACHE)
-      .then((cache) => cache.addAll(PRECACHE_ASSETS))
-      .then(() => self.skipWaiting())
-  );
+// install: プリキャッシュなし、即座に新バージョンへ切り替え
+self.addEventListener('install', () => {
+  self.skipWaiting();
 });
 
+// activate: 古いキャッシュを全削除してから制御を取得
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    Promise.all([
-      caches.keys().then((keys) =>
-        Promise.all(
-          keys
-            .filter((key) => key !== STATIC_CACHE && key !== RUNTIME_CACHE)
-            .map((key) => caches.delete(key))
-        )
-      ),
-      self.clients.claim(),
-    ])
+    caches
+      .keys()
+      .then((keys) =>
+        Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))
+      )
+      .then(() => self.clients.claim())
   );
 });
 
 self.addEventListener('fetch', (event) => {
-  const { request } = event;
-  const url = new URL(request.url);
+  const url = new URL(event.request.url);
 
-  if (url.origin !== self.location.origin) return;
-  if (url.pathname.startsWith('/api/')) return;
-
-  // Next.js static assets are content-hashed — cache forever
+  // /_next/static/ のみキャッシュ（コンテンツハッシュ付き、安全に永続キャッシュ可能）
   if (url.pathname.startsWith('/_next/static/')) {
     event.respondWith(
-      caches.match(request).then(
+      caches.match(event.request).then(
         (cached) =>
           cached ||
-          fetch(request).then((response) => {
+          fetch(event.request).then((response) => {
             if (response.ok) {
-              caches
-                .open(STATIC_CACHE)
-                .then((cache) => cache.put(request, response.clone()));
+              const clone = response.clone();
+              caches.open(CACHE).then((cache) => cache.put(event.request, clone));
             }
             return response;
           })
@@ -53,33 +41,5 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Images and manifest — cache-first
-  if (
-    request.destination === 'image' ||
-    url.pathname === '/manifest.json' ||
-    url.pathname.endsWith('.ico')
-  ) {
-    event.respondWith(
-      caches.match(request).then(
-        (cached) =>
-          cached ||
-          fetch(request).then((response) => {
-            if (response.ok) {
-              caches
-                .open(RUNTIME_CACHE)
-                .then((cache) => cache.put(request, response.clone()));
-            }
-            return response;
-          })
-      )
-    );
-    return;
-  }
-
-  // Navigation — network-first, fall back to cache
-  if (request.mode === 'navigate') {
-    event.respondWith(
-      fetch(request).catch(() => caches.match(request))
-    );
-  }
+  // それ以外（HTML・画像・API）はブラウザ本来の動作に任せる
 });
