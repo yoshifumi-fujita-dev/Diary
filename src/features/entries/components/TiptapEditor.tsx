@@ -28,7 +28,7 @@ export default function TiptapEditor({
     editorProps: {
       attributes: {
         class:
-          "prose prose-invert prose-zinc max-w-none min-h-[400px] focus:outline-none px-1 leading-snug prose-p:my-1",
+          "prose prose-invert prose-zinc max-w-none min-h-[200px] h-full focus:outline-none px-1 leading-snug prose-p:my-1",
       },
     },
     immediatelyRender: false,
@@ -47,8 +47,8 @@ export default function TiptapEditor({
   }, [editor]);
 
   return (
-    <div className="border border-zinc-700 rounded-lg p-4 bg-zinc-900 focus-within:ring-2 focus-within:ring-zinc-500 focus-within:ring-offset-2 focus-within:ring-offset-zinc-950">
-      <EditorContent editor={editor} />
+    <div className="flex-1 flex flex-col border border-zinc-700 rounded-lg p-4 bg-zinc-900 focus-within:ring-2 focus-within:ring-zinc-500 focus-within:ring-offset-2 focus-within:ring-offset-zinc-950 min-h-0">
+      <EditorContent editor={editor} className="flex-1" />
     </div>
   );
 }

@@ -167,8 +167,8 @@ export default function EditEntryPage() {
   }
 
   return (
-    <div className="min-h-dvh bg-zinc-950">
-      <header className="bg-zinc-900 border-b border-zinc-800 sticky top-0 z-10">
+    <div className="h-dvh flex flex-col bg-zinc-950">
+      <header className="shrink-0 bg-zinc-900 border-b border-zinc-800 z-10">
         <div className="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href={backHref} className="text-sm text-zinc-400 hover:text-zinc-100">
             {fromList ? "← 日記一覧" : "← カレンダー"}
@@ -178,10 +178,10 @@ export default function EditEntryPage() {
         </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-4 py-6 space-y-3">
+      <main className="flex-1 flex flex-col min-h-0 max-w-3xl mx-auto w-full px-4 py-6 gap-3">
         {loaded && <TiptapEditor content={content} onChange={setContent} />}
 
-        <div className="text-xs text-zinc-500">
+        <div className="shrink-0 text-xs text-zinc-500">
           {saveState === "error" && "保存に失敗しました"}
           {saveState !== "error" && lastSavedAt && `保存済み ${lastSavedAt.toLocaleTimeString("ja-JP")}`}
         </div>
