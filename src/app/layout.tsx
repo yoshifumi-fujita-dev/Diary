@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Shippori_Mincho } from "next/font/google";
+import { Shippori_Mincho, Noto_Sans_JP, Klee_One } from "next/font/google";
 import { ServiceWorkerRegistration } from "@/components/ServiceWorkerRegistration";
 import { BottomNav } from "@/components/BottomNav";
 import "./globals.css";
@@ -8,6 +8,18 @@ const shipporiMincho = Shippori_Mincho({
   weight: ["400", "500", "700"],
   subsets: ["latin"],
   variable: "--font-shippori",
+});
+
+const notoSansJP = Noto_Sans_JP({
+  weight: ["400", "500", "700"],
+  subsets: ["latin"],
+  variable: "--font-noto-sans",
+});
+
+const kleeOne = Klee_One({
+  weight: ["400", "600"],
+  subsets: ["latin"],
+  variable: "--font-klee",
 });
 
 export const viewport: Viewport = {
@@ -42,7 +54,7 @@ export default function RootLayout({
   return (
     <html
       lang="ja"
-      className={`${shipporiMincho.variable} min-h-dvh antialiased dark`}
+      className={`${shipporiMincho.variable} ${notoSansJP.variable} ${kleeOne.variable} min-h-dvh antialiased dark`}
     >
       <body className="min-h-full flex flex-col font-(family-name:--font-shippori)">
         {children}
