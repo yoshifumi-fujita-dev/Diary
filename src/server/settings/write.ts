@@ -11,6 +11,12 @@ async function setSettingValue(key: string, value: string) {
     });
 }
 
+export async function setFontSettings(input: { font: string }) {
+  const allowed = ["shippori", "noto-sans", "klee"];
+  const font = allowed.includes(input.font) ? input.font : "shippori";
+  await setSettingValue("font", font);
+}
+
 export async function setAutosaveSettings(input: { enabled: boolean; intervalMs: number }) {
   const enabled = Boolean(input.enabled);
   const intervalMs = Math.max(500, Number(input.intervalMs) || 1500);

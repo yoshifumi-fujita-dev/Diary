@@ -21,6 +21,11 @@ export async function getAutosaveSettings() {
   }
 }
 
+export async function getFontSettings() {
+  const raw = await getSettingValue("font");
+  return { font: raw ?? "shippori" };
+}
+
 export async function getAutoLockSettings() {
   const raw = await getSettingValue("auto_lock");
   if (!raw) return { idleTimeoutMs: 180000 };

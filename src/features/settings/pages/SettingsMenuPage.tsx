@@ -3,9 +3,15 @@
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { KeyRound, Notebook, Shield, Timer, Lock, Upload, LogOut } from "lucide-react";
+import { KeyRound, Notebook, Shield, Timer, Lock, Upload, LogOut, Type } from "lucide-react";
 
 const items = [
+  {
+    href: "/settings/font",
+    title: "フォント設定",
+    desc: "日記のフォントを選択します",
+    Icon: Type,
+  },
   {
     href: "/settings/login-password",
     title: "ログインパスワードの変更",
