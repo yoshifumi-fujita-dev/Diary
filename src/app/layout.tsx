@@ -57,7 +57,7 @@ export default function RootLayout({
       lang="ja"
       className={`${shipporiMincho.variable} ${notoSansJP.variable} ${kleeOne.variable} min-h-dvh antialiased dark`}
     >
-      <body className="min-h-full flex flex-col font-(family-name:--font-shippori)">
+      <body className="min-h-full flex flex-col" style={{ fontFamily: "var(--app-font)" }}>
         {children}
         <BottomNav />
         <FontProvider />

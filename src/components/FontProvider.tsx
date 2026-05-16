@@ -16,7 +16,6 @@ export function FontProvider() {
         if (!data?.font) return;
         const css = FONT_MAP[data.font] ?? FONT_MAP["shippori"];
         document.documentElement.style.setProperty("--app-font", css);
-        document.body.style.fontFamily = css;
       })
       .catch(() => {});
   }, []);

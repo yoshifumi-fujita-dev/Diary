@@ -3,6 +3,10 @@
 @import "shadcn/tailwind.css";
 @plugin "@tailwindcss/typography";
 
+:root {
+  --app-font: var(--font-shippori);
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
