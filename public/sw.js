@@ -1,7 +1,6 @@
-// v3: インストール失敗で古いSWが残り続けるバグを修正
-// skipWaiting を即時呼び出しに変更し、/_next/static/ のみキャッシュ
+// v4: safe-area CSS修正に伴うキャッシュクリア
 
-const CACHE = 'diary-v3';
+const CACHE = 'diary-v4';
 
 // install: プリキャッシュなし、即座に新バージョンへ切り替え
 self.addEventListener('install', () => {

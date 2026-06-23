@@ -138,7 +138,7 @@
 
 /* iPhoneノッチ・Dynamic Island 対応: ヘッダーを画面最上部からスタートさせ
    ステータスバー分だけ内側コンテンツを下げる */
-header.sticky {
+header {
   padding-top: env(safe-area-inset-top, 0px);
 }
 
