@@ -29,6 +29,26 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
+## AI要約
+
+日記の閲覧画面から、明示的な確認後に1日分の日記をAIで要約できます。本文はブラウザのリクエストから受け取らず、認証済みのサーバーがDBから取得します。
+
+`.env.local` に以下を設定してください。`OPENAI_BASE_URL` はOpenAI互換APIを使う場合だけ指定します。
+
+```env
+OPENAI_API_KEY=your-api-key
+OPENAI_MODEL=gpt-4.1-mini
+# OPENAI_BASE_URL=https://api.openai.com/v1
+```
+
+スキーマ変更をDBへ適用します。
+
+```bash
+npx drizzle-kit migrate
+```
+
+本文を更新した場合、保存済み要約は「本文が更新されています」と表示されます。再生成すると新しい本文で要約を更新できます。
+
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.

@@ -6,7 +6,9 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import DeleteButton from "@/features/entries/components/DeleteButton";
+import EntrySummary from "@/features/entries/components/EntrySummary";
 import { formatDate } from "@/features/entries/lib/date";
+import { getEntrySummary } from "@/server/entries";
 
 type Params = { params: Promise<{ date: string }> };
 
@@ -16,6 +18,7 @@ export default async function EntryPage({ params }: Params) {
 
   const { date } = await params;
   const [entry] = await db.select().from(entries).where(eq(entries.date, date));
+  const summary = entry ? await getEntrySummary(entry.id, entry.content) : null;
 
   return (
     <div className="min-h-dvh bg-zinc-950">
@@ -43,6 +46,12 @@ export default async function EntryPage({ params }: Params) {
         <div className="text-sm text-zinc-500 mb-4">{formatDate(date, "long")}</div>
         {entry ? (
           <>
+            <EntrySummary
+              date={date}
+              initialSummary={summary?.summary ?? null}
+              initialIsStale={summary?.isStale ?? false}
+              hasContent={entry.content.length > 0}
+            />
             <div
               className="prose prose-invert prose-zinc max-w-none"
               dangerouslySetInnerHTML={{ __html: entry.content }}
