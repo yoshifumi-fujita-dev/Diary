@@ -10,10 +10,10 @@ type Props = {
 export default async function EditEntryRoute({ params, searchParams }: Props) {
 	const [{ date }, query] = await Promise.all([params, searchParams]);
 
-	if (query.mode !== "edit") {
+	if (query.from === "list" && query.mode !== "edit") {
 		const entry = await getEntryByDate(date);
 		if (entry) {
-			redirect(`/entries/${date}${query.from === "list" ? "?from=list" : ""}`);
+			redirect(`/entries/${date}?from=list`);
 		}
 	}
 

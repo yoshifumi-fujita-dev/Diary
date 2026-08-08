@@ -23,7 +23,7 @@ describe("日記編集ルート", () => {
     vi.clearAllMocks();
   });
 
-  it("既存日記は閲覧画面へ転送する", async () => {
+  it("日記一覧から開いた既存日記は閲覧画面へ転送する", async () => {
     mockGetEntryByDate.mockResolvedValue({ id: 1 });
 
     await EditEntryRoute(makeProps({ from: "list" }));
@@ -31,11 +31,12 @@ describe("日記編集ルート", () => {
     expect(mockRedirect).toHaveBeenCalledWith("/entries/2026-08-07?from=list");
   });
 
-  it("新規日記は編集画面を表示する", async () => {
-    mockGetEntryByDate.mockResolvedValue(null);
+  it("カレンダーから開いた既存日記は編集画面を表示する", async () => {
+    mockGetEntryByDate.mockResolvedValue({ id: 1 });
 
     await EditEntryRoute(makeProps());
 
+    expect(mockGetEntryByDate).not.toHaveBeenCalled();
     expect(mockRedirect).not.toHaveBeenCalled();
   });
 
