@@ -36,6 +36,7 @@ import { auth } from "@/server/auth";
 import { cookies } from "next/headers";
 import { db } from "@/server/db";
 import { GET } from "@/app/api/entries/list/route";
+import { MAX_SEARCH_QUERY_LENGTH } from "@/features/entries/lib/search";
 
 const mockAuth = auth as ReturnType<typeof vi.fn>;
 const mockCookies = cookies as ReturnType<typeof vi.fn>;
@@ -129,6 +130,83 @@ describe("GET /api/entries/list", () => {
     expect(res.body.years).toContain("2025");
     // 新しい年が先に来る
     expect(res.body.years.indexOf("2026")).toBeLessThan(res.body.years.indexOf("2025"));
+  });
+
+  it("q 指定時は年をまたいで本文を検索する", async () => {
+    mockAuth.mockResolvedValue({ user: {} });
+    mockCookies.mockResolvedValue({ get: () => ({ value: "1" }) });
+
+    const searchRowsChain = {
+      select: vi.fn().mockReturnThis(),
+      from: vi.fn().mockReturnThis(),
+      orderBy: vi.fn().mockResolvedValue([
+        { date: "2026-04-11", content: "<p>旅行の記録</p>" },
+        { date: "2025-03-01", content: "<p>旅行の計画</p>" },
+      ]),
+    };
+    mockDb.select.mockReturnValueOnce(searchRowsChain);
+
+    const res = await GET(makeRequest({ q: "旅行" })) as unknown as {
+      status: number;
+      body: { items: { date: string; preview: string }[]; years: string[] };
+    };
+    expect(res.status).toBe(200);
+    expect(res.body.items.map((item) => item.date)).toEqual([
+      "2026-04-11",
+      "2025-03-01",
+    ]);
+    expect(res.body.items[0].preview).toBe("旅行の記録");
+    expect(res.body.years).toEqual(["2026", "2025"]);
+    expect(mockDb.select).toHaveBeenCalledTimes(1);
+  });
+
+  it("q 指定時は HTML タグではなく表示テキストを検索する", async () => {
+    mockAuth.mockResolvedValue({ user: {} });
+    mockCookies.mockResolvedValue({ get: () => ({ value: "1" }) });
+
+    const searchRowsChain = {
+      select: vi.fn().mockReturnThis(),
+      from: vi.fn().mockReturnThis(),
+      orderBy: vi.fn().mockResolvedValue([
+        { date: "2026-04-11", content: "<p>旅行<strong>記録</strong></p>" },
+      ]),
+    };
+    mockDb.select.mockReturnValueOnce(searchRowsChain);
+
+    const res = await GET(makeRequest({ q: "旅行記録" })) as unknown as {
+      status: number;
+      body: { items: { date: string }[] };
+    };
+    expect(res.status).toBe(200);
+    expect(res.body.items.map((item) => item.date)).toEqual(["2026-04-11"]);
+
+    mockDb.select.mockReturnValueOnce({
+      select: vi.fn().mockReturnThis(),
+      from: vi.fn().mockReturnThis(),
+      orderBy: vi.fn().mockResolvedValue([
+        { date: "2026-04-11", content: "<p>旅行<strong>記録</strong></p>" },
+      ]),
+    });
+
+    const tagRes = await GET(makeRequest({ q: "strong" })) as unknown as {
+      status: number;
+      body: { items: { date: string }[] };
+    };
+    expect(tagRes.status).toBe(200);
+    expect(tagRes.body.items).toEqual([]);
+  });
+
+  it("長すぎる q は DB を検索せず 400 を返す", async () => {
+    mockAuth.mockResolvedValue({ user: {} });
+    mockCookies.mockResolvedValue({ get: () => ({ value: "1" }) });
+
+    const res = await GET(makeRequest({
+      q: "あ".repeat(MAX_SEARCH_QUERY_LENGTH + 1),
+    })) as unknown as { status: number; body: { error: string } };
+
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBe("Search query is too long");
+    expect(mockDb.select).not.toHaveBeenCalled();
   });
 
   it("不正な year パラメータは items: [] を返す", async () => {

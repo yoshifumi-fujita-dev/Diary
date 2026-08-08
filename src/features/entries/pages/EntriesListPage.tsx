@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, Suspense } from "react";
+import { useEffect, useEffectEvent, useMemo, useRef, useState, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Search, X } from "lucide-react";
+import { MAX_SEARCH_QUERY_LENGTH } from "@/features/entries/lib/search";
 
 type ListItem = { date: string; preview: string };
 
@@ -18,6 +20,8 @@ function EntriesListInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const yearParam = searchParams.get("year") ?? CURRENT_YEAR;
+  const queryParam = searchParams.get("q")?.trim() ?? "";
+  const isSearchMode = queryParam.length > 0;
 
   const [items, setItems] = useState<ListItem[]>([]);
   const [years, setYears] = useState<string[]>([]);
@@ -30,6 +34,7 @@ function EntriesListInner() {
   const [pwError, setPwError] = useState("");
   const [verifying, setVerifying] = useState(false);
   const [yearDropdownOpen, setYearDropdownOpen] = useState(false);
+  const [searchInput, setSearchInput] = useState(queryParam);
   const [idleTimeoutMs, setIdleTimeoutMs] = useState(180000);
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -46,23 +51,32 @@ function EntriesListInner() {
     return Object.keys(map)
       .sort((a, b) => b.localeCompare(a))
       .map((key) => {
-        const [, month] = key.split("-").map(Number);
-        return { key, label: `${month}月`, items: map[key] };
+        const [groupYear, month] = key.split("-").map(Number);
+        const label = isSearchMode ? `${groupYear}年${month}月` : `${month}月`;
+        return { key, label, items: map[key] };
       });
-  }, [items]);
+  }, [items, isSearchMode]);
 
   const yearIndex = years.indexOf(yearParam);
   const prevYear = years[yearIndex + 1] ?? null;
   const nextYear = years[yearIndex - 1] ?? null;
 
-  async function load(year: string) {
+  const load = useEffectEvent(async (year: string, query: string, signal: AbortSignal) => {
     setLoading(true);
     setLoadError("");
     setItems([]);
     try {
-      const res = await fetch(`/api/entries/list?year=${year}`);
+      const params = new URLSearchParams();
+      if (query) {
+        params.set("q", query);
+      } else {
+        params.set("year", year);
+      }
+      const res = await fetch(`/api/entries/list?${params.toString()}`, { signal });
+      if (signal.aborted) return;
       if (res.status === 401) {
         const data = await res.json().catch(() => null);
+        if (signal.aborted) return;
         if (data?.error === "Unauthorized") {
           router.push("/login");
           return;
@@ -75,19 +89,26 @@ function EntriesListInner() {
         return;
       }
       const data = await res.json();
+      if (signal.aborted) return;
       setItems(data.items ?? []);
       setYears(data.years ?? []);
     } catch {
-      setLoadError("読み込みに失敗しました");
+      if (!signal.aborted) setLoadError("読み込みに失敗しました");
     } finally {
-      setLoading(false);
+      if (!signal.aborted) setLoading(false);
     }
-  }
+  });
 
   useEffect(() => {
     if (!verified) return;
-    load(yearParam);
-  }, [yearParam, verified]);
+    const controller = new AbortController();
+    void load(yearParam, queryParam, controller.signal);
+    return () => controller.abort();
+  }, [yearParam, queryParam, verified]);
+
+  useEffect(() => {
+    setSearchInput(queryParam);
+  }, [queryParam]);
 
   useEffect(() => {
     if (showModal) {
@@ -148,20 +169,49 @@ function EntriesListInner() {
     setVerifying(true);
     setPwError("");
 
-    const res = await fetch("/api/auth/verify-diary", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ password }),
-    });
+    try {
+      const res = await fetch("/api/auth/verify-diary", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password }),
+      });
 
-    if (res.ok) {
-      setShowModal(false);
-      setPassword("");
-      setVerified(true);
-    } else {
-      setPwError("パスワードが違います");
+      if (res.ok) {
+        setShowModal(false);
+        setPassword("");
+        setVerified(true);
+      } else {
+        setPwError("パスワードが違います");
+      }
+    } catch {
+      setPwError("確認に失敗しました。もう一度お試しください");
+    } finally {
+      setVerifying(false);
     }
-    setVerifying(false);
+  }
+
+  function handleSearchSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const query = searchInput.trim();
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (query) {
+      params.set("q", query);
+      params.delete("year");
+    } else {
+      params.delete("q");
+      if (!params.has("year")) params.set("year", yearParam);
+    }
+
+    router.push(`/entries?${params.toString()}`);
+  }
+
+  function handleClearSearch() {
+    setSearchInput("");
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("q");
+    if (!params.has("year")) params.set("year", yearParam);
+    router.push(`/entries?${params.toString()}`);
   }
 
   return (
@@ -169,80 +219,116 @@ function EntriesListInner() {
       {/* ── 年ナビ + 月ナビ（スティッキー） ── */}
       <div className="sticky top-13.25 z-10 bg-zinc-950 border-b border-zinc-800/60">
         <div className="max-w-3xl mx-auto px-4">
-          {/* 年ナビ */}
-          <div className="flex items-center justify-between py-3">
-            <div className="w-20">
-              {prevYear && (
-                <Link
-                  href={`/entries?year=${prevYear}`}
-                  className="text-sm text-zinc-500 hover:text-zinc-200 transition-colors"
+          <form onSubmit={handleSearchSubmit} className="pt-3">
+            <div className="relative">
+              <Search
+                size={16}
+                aria-hidden="true"
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500"
+              />
+              <input
+                type="search"
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+                maxLength={MAX_SEARCH_QUERY_LENGTH}
+                aria-label="全期間から日記を検索"
+                placeholder="全期間から検索"
+                className="w-full bg-zinc-900 border border-zinc-700 rounded-lg pl-9 pr-10 py-2 text-sm text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:border-zinc-500"
+              />
+              {searchInput && (
+                <button
+                  type="button"
+                  onClick={handleClearSearch}
+                  aria-label="検索をクリア"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-zinc-500 hover:text-zinc-100 transition-colors"
                 >
-                  ← {prevYear}
-                </Link>
+                  <X size={16} aria-hidden="true" />
+                </button>
               )}
             </div>
-            <div ref={dropdownRef} className="relative flex items-center gap-2">
-              <button
-                onClick={() => setYearDropdownOpen((v) => !v)}
-                className="text-zinc-100 font-medium hover:text-zinc-300 transition-colors"
-              >
-                {yearParam}年 ▾
-              </button>
-              {items.length > 0 && (
-                <span className="text-xs text-zinc-400">{items.length}件</span>
-              )}
-              {yearDropdownOpen && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-zinc-900 border border-zinc-700 rounded-xl shadow-xl z-20 py-1 min-w-24">
-                  {years.map((y) => (
-                    <Link
-                      key={y}
-                      href={`/entries?year=${y}`}
-                      onClick={() => setYearDropdownOpen(false)}
-                      className={`block px-4 py-2 text-sm text-center transition-colors ${
-                        y === yearParam
-                          ? "text-zinc-100 font-medium"
-                          : "text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800"
-                      }`}
-                    >
-                      {y}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
-            <div className="w-20 text-right">
-              {nextYear && (
-                <Link
-                  href={`/entries?year=${nextYear}`}
-                  className="text-sm text-zinc-500 hover:text-zinc-200 transition-colors"
-                >
-                  {nextYear} →
-                </Link>
-              )}
-            </div>
-          </div>
+          </form>
 
-          {/* 月ナビ */}
-          <div className="grid grid-cols-12 pb-2">
-            {Array.from({ length: 12 }, (_, i) => {
-              const m = String(i + 1).padStart(2, "0");
-              const key = `${yearParam}-${m}`;
-              const hasEntries = grouped.some((g) => g.key === key);
-              return hasEntries ? (
-                <a
-                  key={m}
-                  href={`#month-${key}`}
-                  className="py-1 text-sm text-zinc-400 hover:text-zinc-100 transition-colors text-center"
-                >
-                  {i + 1}月
-                </a>
-              ) : (
-                <span key={m} className="py-1 text-sm text-zinc-700 cursor-default text-center">
-                  {i + 1}月
-                </span>
-              );
-            })}
-          </div>
+          {!isSearchMode ? (
+            <>
+              <div className="flex items-center justify-between py-3">
+                <div className="w-20">
+                  {prevYear && (
+                    <Link
+                      href={`/entries?year=${prevYear}`}
+                      className="text-sm text-zinc-500 hover:text-zinc-200 transition-colors"
+                    >
+                      ← {prevYear}
+                    </Link>
+                  )}
+                </div>
+                <div ref={dropdownRef} className="relative flex items-center gap-2">
+                  <button
+                    onClick={() => setYearDropdownOpen((v) => !v)}
+                    className="text-zinc-100 font-medium hover:text-zinc-300 transition-colors"
+                  >
+                    {yearParam}年 ▾
+                  </button>
+                  {items.length > 0 && (
+                    <span className="text-xs text-zinc-400">{items.length}件</span>
+                  )}
+                  {yearDropdownOpen && (
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-zinc-900 border border-zinc-700 rounded-xl shadow-xl z-20 py-1 min-w-24">
+                      {years.map((y) => (
+                        <Link
+                          key={y}
+                          href={`/entries?year=${y}`}
+                          onClick={() => setYearDropdownOpen(false)}
+                          className={`block px-4 py-2 text-sm text-center transition-colors ${
+                            y === yearParam
+                              ? "text-zinc-100 font-medium"
+                              : "text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800"
+                          }`}
+                        >
+                          {y}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <div className="w-20 text-right">
+                  {nextYear && (
+                    <Link
+                      href={`/entries?year=${nextYear}`}
+                      className="text-sm text-zinc-500 hover:text-zinc-200 transition-colors"
+                    >
+                      {nextYear} →
+                    </Link>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-12 pb-2">
+                {Array.from({ length: 12 }, (_, i) => {
+                  const m = String(i + 1).padStart(2, "0");
+                  const key = `${yearParam}-${m}`;
+                  const hasEntries = grouped.some((g) => g.key === key);
+                  return hasEntries ? (
+                    <a
+                      key={m}
+                      href={`#month-${key}`}
+                      className="py-1 text-sm text-zinc-400 hover:text-zinc-100 transition-colors text-center"
+                    >
+                      {i + 1}月
+                    </a>
+                  ) : (
+                    <span key={m} className="py-1 text-sm text-zinc-700 cursor-default text-center">
+                      {i + 1}月
+                    </span>
+                  );
+                })}
+              </div>
+            </>
+          ) : (
+            <div className="flex items-center justify-between py-3 text-sm">
+              <span className="text-zinc-400">全期間・「{queryParam}」の検索結果</span>
+              {items.length > 0 && <span className="text-xs text-zinc-400">{items.length}件</span>}
+            </div>
+          )}
         </div>
       </div>
 
@@ -256,7 +342,9 @@ function EntriesListInner() {
         )}
         {!loading && !loadError && items.length === 0 && (
           <div className="text-zinc-600 text-sm text-center py-16">
-            {yearParam}年の日記はありません
+            {isSearchMode
+              ? `「${queryParam}」に一致する日記はありません`
+              : `${yearParam}年の日記はありません`}
           </div>
         )}
 

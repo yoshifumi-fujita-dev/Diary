@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/server/auth";
 import { listEntriesByYear } from "@/server/entries";
 import { hasDiaryAccess } from "@/server/auth/diary-access";
+import { MAX_SEARCH_QUERY_LENGTH } from "@/features/entries/lib/search";
 
 export async function GET(request: Request) {
   const session = await auth();
@@ -12,6 +13,11 @@ export async function GET(request: Request) {
 
   const { searchParams } = new URL(request.url);
   const year = searchParams.get("year") ?? "";
-  const data = await listEntriesByYear(year);
+  const query = (searchParams.get("q") ?? "").trim();
+  if (query.length > MAX_SEARCH_QUERY_LENGTH) {
+    return NextResponse.json({ error: "Search query is too long" }, { status: 400 });
+  }
+
+  const data = await listEntriesByYear(year, query);
   return NextResponse.json(data);
 }
